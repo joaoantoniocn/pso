@@ -6,7 +6,7 @@ class PSO:
 	Particle Swarm Optimization
 	'''
 
-	def __init__(self, n_particles=100, particle_dimension=10, momentum=0.2, c_pbest=0.8, c_gbest=0.2, benchmark='Ackley', stop_criterion=100):
+	def __init__(self, n_particles=100, particle_dimension=10, momentum=0.2, c_pbest=0.5, c_gbest=0.5, benchmark='Ackley', stop_criterion=100):
 		'''
 
 		:param n_particles:             Number of particles.
