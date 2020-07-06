@@ -1,5 +1,6 @@
 import numpy as np
-from benchmark import get_domain, get_function
+from benchmark import get_domain, get_function, get_optmial_solution
+import matplotlib.pyplot as plt
 
 class PSO:
 	'''
@@ -39,12 +40,26 @@ class PSO:
 		self.g_best_fitness = self.p_best_fitness[np.argmin(self.p_best_fitness)]
 
 
-	def run(self):
+	def run(self, print_solution=False, stay_domain=True):
 		'''
 			Find best optmization
+
+			:param print_solution:      if true, each iteration will be print
+			:param stay_domain:         if true, particles are not allowed to be beyond the function domain
 		'''
 
 		while self.g_best_last_updated < self.stop_criterion:
+
+			if print_solution:
+				plt.clf()
+				plt.ylim(self.benchmark_domain[0] - self.benchmark_domain[0] * 0.1, self.benchmark_domain[1] + self.benchmark_domain[1] * 0.1)
+				plt.xlim(self.benchmark_domain[0] - self.benchmark_domain[0] * 0.1, self.benchmark_domain[1] + self.benchmark_domain[1] * 0.1)
+				plt.scatter(self.particles[:, 0], self.particles[:, 1], label='optimal solution: ' + get_optmial_solution(self.benchmark_name))
+				plt.scatter(self.g_best[0], self.g_best[1], label= 'fitness: ' + str(self.g_best_fitness))
+				plt.title(self.benchmark_name)
+				plt.legend()
+				plt.pause(0.1)
+
 
 			self.total_itereations += 1
 			fitness = self.calculate_fitness()
@@ -76,7 +91,12 @@ class PSO:
 			# --- update particle position
 			self.particles += self.velocity
 
+			# --- keep particles in the function domain
+			if stay_domain:
+				for i in range(len(self.particles)):
 
+					self.particles[i][self.particles[i] < self.benchmark_domain[0]] = self.benchmark_domain[0]
+					self.particles[i][self.particles[i] > self.benchmark_domain[1]] = self.benchmark_domain[1]
 
 	def calculate_fitness(self):
 		fitness = []
