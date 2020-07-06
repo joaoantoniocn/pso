@@ -52,8 +52,8 @@ class PSO:
 
 			if print_solution:
 				plt.clf()
-				plt.ylim(self.benchmark_domain[0] - self.benchmark_domain[0] * 0.1, self.benchmark_domain[1] + self.benchmark_domain[1] * 0.1)
-				plt.xlim(self.benchmark_domain[0] - self.benchmark_domain[0] * 0.1, self.benchmark_domain[1] + self.benchmark_domain[1] * 0.1)
+				plt.ylim(self.benchmark_domain[0] - np.abs(self.benchmark_domain[0] * 0.2), self.benchmark_domain[1] + self.benchmark_domain[1] * 0.2)
+				plt.xlim(self.benchmark_domain[0] - np.abs(self.benchmark_domain[0] * 0.2), self.benchmark_domain[1] + self.benchmark_domain[1] * 0.2)
 				plt.scatter(self.particles[:, 0], self.particles[:, 1], label='optimal solution: ' + get_optmial_solution(self.benchmark_name))
 				plt.scatter(self.g_best[0], self.g_best[1], label= 'fitness: ' + str(self.g_best_fitness))
 				plt.title(self.benchmark_name)
