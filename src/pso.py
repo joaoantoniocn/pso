@@ -1,5 +1,5 @@
 import numpy as np
-from benchmark import get_domain, get_function, get_optmial_solution
+from benchmark import get_domain, get_function, get_optmial_solution_text, get_optmial_solution
 import matplotlib.pyplot as plt
 
 class PSO:
@@ -52,10 +52,20 @@ class PSO:
 
 			if print_solution:
 				plt.clf()
-				plt.ylim(self.benchmark_domain[0] - np.abs(self.benchmark_domain[0] * 0.2), self.benchmark_domain[1] + self.benchmark_domain[1] * 0.2)
-				plt.xlim(self.benchmark_domain[0] - np.abs(self.benchmark_domain[0] * 0.2), self.benchmark_domain[1] + self.benchmark_domain[1] * 0.2)
-				plt.scatter(self.particles[:, 0], self.particles[:, 1], label='optimal solution: ' + get_optmial_solution(self.benchmark_name))
-				plt.scatter(self.g_best[0], self.g_best[1], label= 'fitness: ' + str(self.g_best_fitness))
+
+				negative_discount = np.abs(self.benchmark_domain[0] * 0.2)
+				positive_discount = self.benchmark_domain[1] * 0.2
+
+				if negative_discount == 0:
+					negative_discount = 2
+				if positive_discount == 0:
+					positive_discount = 2
+
+				plt.ylim(self.benchmark_domain[0] - negative_discount, self.benchmark_domain[1] + positive_discount)
+				plt.xlim(self.benchmark_domain[0] - negative_discount, self.benchmark_domain[1] + positive_discount)
+				plt.scatter(self.particles[:, 0], self.particles[:, 1])
+				plt.scatter(self.g_best[0], self.g_best[1], label= 'g_best fitness: ' + str(self.g_best_fitness))
+				plt.scatter(get_optmial_solution(self.benchmark_name)[0], get_optmial_solution(self.benchmark_name)[1], label='optimal solution: ' + get_optmial_solution_text(self.benchmark_name))
 				plt.title(self.benchmark_name)
 				plt.legend()
 				plt.pause(0.1)

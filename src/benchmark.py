@@ -25,7 +25,7 @@ def get_function(benchmark_name):
 
 	return functions[benchmark_name]
 
-def get_optmial_solution(benchmark_name):
+def get_optmial_solution_text(benchmark_name):
 	best_solution = {
 		'Ackley': 'f(x∗)=0 at x∗=(0,…,0).',
 		'Alpine': 'f(x∗)=0 located at x∗=(0,…,0).',
@@ -33,6 +33,18 @@ def get_optmial_solution(benchmark_name):
 		'Happy Cat': 'f(x∗)=0 located at x∗=(−1,…,−1).',
 		'Brown': 'f(x∗)=0 located at x∗=0.',
 		'Exponential': 'f(x∗)= at x∗=0.'
+	}
+
+	return best_solution[benchmark_name]
+
+def get_optmial_solution(benchmark_name):
+	best_solution = {
+		'Ackley': [0,0],
+		'Alpine': [0,0],
+		'Schwefel': [420.9687, 420.9687],
+		'Happy Cat': [-1,-1],
+		'Brown': [0,0],
+		'Exponential': [0,0]
 	}
 
 	return best_solution[benchmark_name]

@@ -1,5 +1,5 @@
 from pso import PSO
-from benchmark import get_optmial_solution
+from benchmark import get_optmial_solution_text
 import numpy as np
 
 benchmark = ['Ackley', 'Alpine', 'Schwefel', 'Happy Cat', 'Brown', 'Exponential']
@@ -14,5 +14,5 @@ for i in range(len(benchmark)):
 	print('iterations: ' + str(modelo.total_itereations))
 	print('fitness: ' + str(modelo.g_best_fitness))
 	print('solution: ' +str(modelo.g_best))
-	print('optimal solution: ' + get_optmial_solution(benchmark[i]))
+	print('optimal solution: ' + get_optmial_solution_text(benchmark[i]))
 	print('----------')
