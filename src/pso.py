@@ -29,7 +29,7 @@ class PSO:
 		self.benchmark_function = get_function(benchmark)
 		self.stop_criterion = stop_criterion
 		self.g_best_last_updated = 0                            # number of iterations without updating g_best
-		self.total_itereations = 0                              # number total of iterations until the algorithm stops
+		self.total_iterations = 0                              # number total of iterations until the algorithm stops
 
 		# initialization
 		self.particles = np.random.uniform(self.benchmark_domain[0],self.benchmark_domain[1], [self.n_particles, self.particle_dimension])
@@ -71,7 +71,7 @@ class PSO:
 				plt.pause(0.1)
 
 
-			self.total_itereations += 1
+			self.total_iterations += 1
 			fitness = self.calculate_fitness()
 
 			# --- updating p_best
