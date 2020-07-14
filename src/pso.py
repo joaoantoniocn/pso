@@ -39,10 +39,27 @@ class PSO:
 		self.g_best = self.p_best[np.argmin(self.p_best_fitness)]
 		self.g_best_fitness = self.p_best_fitness[np.argmin(self.p_best_fitness)]
 
-
-	def run(self, print_solution=False, stay_domain=True):
+	def run_with_reboot(self, print_solution=False, stay_domain=True, n_reboot=20):
 		'''
-			Find best optmization
+		Run PSO with random reboot. It is used to avoid be stuck in a local minimum.
+
+		:param print_solution:      if true, each iteration will be print
+		:param stay_domain:         if true, particles are not allowed to be beyond the function domain
+		:param n_reboot:            number of reboots
+		'''
+
+		for i in range(n_reboot):
+			self.run(print_solution=print_solution, stay_domain=stay_domain, reboot_message=', reboot = ' +str(i))
+			self.g_best_last_updated = 0
+			self.particles = np.random.uniform(self.benchmark_domain[0], self.benchmark_domain[1],
+			                                   [self.n_particles, self.particle_dimension])
+			self.velocity = np.zeros([self.n_particles, self.particle_dimension])
+			self.p_best = self.particles
+			self.p_best_fitness = self.calculate_fitness()
+
+	def run(self, print_solution=False, stay_domain=True, reboot_message=''):
+		'''
+			Find best optimization.
 
 			:param print_solution:      if true, each iteration will be print
 			:param stay_domain:         if true, particles are not allowed to be beyond the function domain
@@ -66,7 +83,7 @@ class PSO:
 				plt.scatter(self.particles[:, 0], self.particles[:, 1])
 				plt.scatter(self.g_best[0], self.g_best[1], label= 'g_best fitness: ' + str(self.g_best_fitness))
 				plt.scatter(get_optmial_solution(self.benchmark_name)[0], get_optmial_solution(self.benchmark_name)[1], label='optimal solution: ' + get_optmial_solution_text(self.benchmark_name))
-				plt.title(self.benchmark_name)
+				plt.title(self.benchmark_name + reboot_message)
 				plt.legend()
 				plt.pause(0.1)
 
