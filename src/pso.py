@@ -65,7 +65,7 @@ class PSO:
 			:param stay_domain:         if true, particles are not allowed to be beyond the function domain
 		'''
 
-		while self.g_best_last_updated < self.stop_criterion:
+		while (self.g_best_last_updated < self.stop_criterion) and (self.total_iterations < 5000):
 
 			if print_solution:
 				plt.clf()
