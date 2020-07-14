@@ -31,6 +31,7 @@ class ABC:
 		# initialization
 		self.food_source = np.zeros([self.food_number, problem_dimension])
 		self.food_fitness = np.zeros(self.food_number)
+		self.food_f_x = np.zeros(self.food_number)
 		self.food_probability = np.zeros(self.food_number)
 		self.food_iteration = np.zeros(self.food_number)
 
@@ -47,6 +48,88 @@ class ABC:
 		# best solution
 		self.best_source = np.copy(self.food_source[np.argmax(self.food_fitness)])
 		self.best_fitness = max(self.food_fitness)
+
+	def run_stop_criterion(self, print_solution=False, iterations_without_improving=20):
+		'''
+		Find best solution. Stop criterion is: run until best_source does not update for 'n' iterations.
+
+		:iterations_without_improving:          Number of iterations without improvement.
+		'''
+
+		iterations = 0
+		while iterations <= iterations_without_improving:
+
+			# --- printing
+			if print_solution:
+				plt.clf()
+
+				negative_discount = np.abs(self.benchmark_domain[0] * 0.2)
+				positive_discount = self.benchmark_domain[1] * 0.2
+
+				if negative_discount == 0:
+					negative_discount = 2
+				if positive_discount == 0:
+					positive_discount = 2
+
+				plt.ylim(self.benchmark_domain[0] - negative_discount, self.benchmark_domain[1] + positive_discount)
+				plt.xlim(self.benchmark_domain[0] - negative_discount, self.benchmark_domain[1] + positive_discount)
+				plt.scatter(self.food_source[:, 0], self.food_source[:, 1])
+				plt.scatter(self.best_source[0], self.best_source[1], label= 'g_best fitness: ' + str(self.benchmark_function(self.best_source)))
+				plt.scatter(get_optmial_solution(self.benchmark_name)[0], get_optmial_solution(self.benchmark_name)[1], label='optimal solution: ' + get_optmial_solution_text(self.benchmark_name))
+				plt.title(self.benchmark_name)
+				plt.legend()
+				plt.pause(0.1)
+			# ---
+			# employed bees
+			for j in range(self.food_number):
+				new_food_source, new_food_source_fitness = self.update_food_source(j)
+
+				# if new source is better than the current one
+				if new_food_source_fitness > self.food_fitness[j]:
+					self.food_source[j] = new_food_source
+					self.food_fitness[j] = new_food_source_fitness
+					self.food_iteration[j] = 0
+				else:
+					# if new source is not better than the current one
+					self.food_iteration[j] += 1
+
+			# calculating probabilities
+			self.calculate_probability()
+
+			# onlooker bees
+			for j in range(self.food_number):
+
+				# getting random food source
+				random_source = np.random.choice(self.food_number, 1, p=self.food_probability)[0]
+
+				# update random food source
+				new_food_source, new_food_source_fitness = self.update_food_source(random_source)
+
+				# if new source is better than the current one
+				if new_food_source_fitness > self.food_fitness[random_source]:
+					self.food_source[random_source] = new_food_source
+					self.food_fitness[random_source] = new_food_source_fitness
+					self.food_iteration[random_source] = 0
+				else:
+					self.food_iteration[random_source] += 1
+
+			# memorizing best solution
+			if max(self.food_fitness) > self.best_fitness:
+				self.best_fitness = max(self.food_fitness)
+				self.best_source = np.copy(self.food_source[np.argmax(self.food_fitness)])
+				iterations = 0
+			else:
+				iterations += 1
+
+
+			# if food source is empty get new food source
+			if max(self.food_iteration) > self.max_food_iteration:
+				food_source, food_fitness = self.find_food_source_randonmly()
+
+				self.food_source[np.argmax(self.food_fitness)] = food_source
+				self.food_fitness[np.argmax(self.food_fitness)] = food_fitness
+				self.food_iteration[np.argmax(self.food_fitness)] = 0
+
 
 	def run(self, print_solution=False):
 		'''
@@ -70,9 +153,9 @@ class ABC:
 				plt.ylim(self.benchmark_domain[0] - negative_discount, self.benchmark_domain[1] + positive_discount)
 				plt.xlim(self.benchmark_domain[0] - negative_discount, self.benchmark_domain[1] + positive_discount)
 				plt.scatter(self.food_source[:, 0], self.food_source[:, 1])
-				plt.scatter(self.best_source[0], self.best_source[1], label= 'g_best fitness: ' + str(self.best_fitness))
+				plt.scatter(self.best_source[0], self.best_source[1], label= 'g_best fitness: ' + str(self.benchmark_function(self.best_source)))
 				plt.scatter(get_optmial_solution(self.benchmark_name)[0], get_optmial_solution(self.benchmark_name)[1], label='optimal solution: ' + get_optmial_solution_text(self.benchmark_name))
-				plt.title(self.benchmark_name)
+				plt.title(self.benchmark_name + ', iteration ' + str(i))
 				plt.legend()
 				plt.pause(0.1)
 			# ---

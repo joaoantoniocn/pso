@@ -4,7 +4,7 @@ from benchmark import get_optmial_solution_text
 import numpy as np
 
 benchmark = ['Ackley', 'Alpine', 'Schwefel', 'Happy Cat', 'Brown', 'Exponential']
-dimension=2
+dimension=50
 '''
 for i in range(len(benchmark)):
 
@@ -20,7 +20,7 @@ for i in range(len(benchmark)):
 	print('optimal solution: ' + get_optmial_solution_text(benchmark[i]))
 	print('----------')
 '''
-
+'''
 for i in range(len(benchmark)):
 	modelo = ABC(n_bees=200, problem_dimension=dimension, benchmark=benchmark[i], max_iterations=200, max_food_iteration=20)
 	modelo.run(print_solution=True)
@@ -32,3 +32,4 @@ for i in range(len(benchmark)):
 	print('solution: ' + str(modelo.best_source))
 	print('optimal solution: ' + get_optmial_solution_text(benchmark[i]))
 	print('----------')
+'''
