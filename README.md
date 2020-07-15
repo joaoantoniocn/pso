@@ -243,6 +243,7 @@ NP                  = tamanho da colônia
 ## Resultados
 
 ### Particle Swarm Optimization (PSO)
+Resultados para o método base do PSO.
 
 #### - stop_criterion
 
@@ -366,3 +367,46 @@ tempo           | 47s   | 432s   | 100s      | 39s      | 2213s      | 10s
 
 Nesse experimento é possível ver que o aumento da dimensão das partículas dificulta o processo de otimização, aumentando (piorando) o fitness e o tempo de convergência das funções. Em relação aos benchmarks, o Schwefel parece ser o mais difícil entre eles enquanto o Happy Cat aparenta ser o mais fácil de otimizar.
 
+### Particle Swarm Optimization (PSO) - Variação
+Resultados para variação do PSO.
+
+
+#### Benchmark / Dimensão das partículas
+Nesse experimento a variação do PSO foi executada com os melhores parâmetros achados a partir dos experimentos realizados anteriormente. Nele é possível ver a performance do PSO nos benchmarks apresentados anteriormente. Para cada benchmark a variação do PSO é testada utilizando partículas de tamanho 10, 20 e 50.
+
+
+
+##### Configuração
+```
+num_repeticoes  = 20        # número de reinicializações randomicas para variação do PSO
+num_particulas  = 100
+stop_criterion  = 40
+momentum        = 0.6
+c1              = 1 - c2    # c_pbest
+c2              = 0.6       # c_gbest
+num_repeticoes  = 100       # número de repetições do experimento
+```
+
+##### Resultados
+dim_particulas = 10
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 1.96e-5| 0    | 454.90    | 0.1687    | 2.32e-14  | -0.9999
+tempo           | 301s   | 208s   | 182s       | 237s      | 1189s      | 181s
+
+dim_particulas = 20
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 0.0049| 0.2471| 1717.38   | 0.3259    | 1.04e-8    | -0.9999
+tempo           | 454s   | 486s   | 256s      | 247s      | 3470s      | 304s
+
+dim_particulas = 50
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 9.4798| 10.8680| 7470.23   | 0.6754    | 7.0297 | -0.9999
+tempo           | 337s   | 742s   | 345s      | 260s      | 6491s      | 237s
+
+Em geral, os resultados adquiridos nos experimentos com o a variação PSO mostram uma melhora no fitness das funções quando comparado com os resultados do PSO tradicional. Isso pode ser explicado pela reinicialização aleatória das partículas para fugir dos mínimos locais. Entretando essa alteração na condição de parada do algoritmo também trás impactos no tempo de convergência do método, pode-se dizer que em todos os benchmarks tivemos um aumento considerável no tempo de convergência do método. 
