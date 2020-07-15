@@ -258,7 +258,7 @@ c1              = 0.5 # c_pbest
 c2              = 0.5 # c_gbest
 num_repeticoes  = 100 # número de repetições do experimento
 ```
-
+##### Resultados
 stop_criterion  | 20    | 40    | 60    | 80    | 100
 --------------- | ----- | ----- | ----- | ----- | -----
 fitness         | 0.0833| 0.0038| 0.0039| 0.1171| 0.0799
@@ -280,7 +280,7 @@ w               = 0.5       # momentum
 c1              = 1 - c2    # c_pbest
 num_repeticoes  = 100       # número de repetições do experimento
 ```
-
+##### Resultados
 c_gbest         | 0.2    | 0.4  | 0.5   | 0.6   | 0.8
 --------------- | ----- | ----- | ----- | ----- | -----
 fitness         | 2.4004| 0.0762| 0.0584| 0.0012| 0.0212
@@ -301,7 +301,7 @@ c1              = 1 - c2    # c_pbest
 c2              = 0.6       # c_gbest
 num_repeticoes  = 100       # número de repetições do experimento
 ```
-
+##### Resultados
 momentum        | 0     | 0.2   | 0.4   | 0.6   | 0.8
 --------------- | ----- | ----- | ----- | ----- | -----
 fitness         | 1.2473| 2.9358| 0.2283| 0.0077| 9.3079
@@ -322,7 +322,7 @@ c1              = 1 - c2    # c_pbest
 c2              = 0.6       # c_gbest
 num_repeticoes  = 100       # número de repetições do experimento
 ```
-
+##### Resultados
 num_particulas  | 20    | 40    | 60    | 80    | 100
 --------------- | ----- | ----- | ----- | ----- | -----
 fitness         | 3.2313| 0.0327| 0.0343| 0.0015| 0.0014
@@ -330,4 +330,39 @@ tempo           | 32s  | 57s  | 80s  | 123s  | 157s
 
 Os resultados desse experimento mostraram que no intervalo testado para essa configuração de parâmetros/benchmark, o aumento no número de partículas refletiu diretamente na diminuição (melhora) do fitness. De forma natural, também é pertinente se atentar que o aumento do número de partículas tem uma relação direta com o aumento do tempo de convergência do algoritmo. Desta forma, é aconselhavel avaliar um trade off entre fitness e custo computacional fazer a escolher desse parâmetro. De toda forma, o valor do num_particulas que obteve o melhor fitness nesse experimento foi num_particulas = 100.
 
- #### Benchmark / Dimensão das partículas
+#### Benchmark / Dimensão das partículas
+Nesse experimento o PSO foi executado com os melhores parâmetros achados a partir dos experimentos realizados anteriormente. Nele é possível ver a performance do PSO nos benchmarks apresentados anteriormente. Para cada benchmark o PSO é testado utilizando partículas de tamanho 10, 20 e 50.
+
+##### Configuração
+```
+num_particulas  = 100
+stop_criterion  = 40
+momentum        = 0.6
+c1              = 1 - c2    # c_pbest
+c2              = 0.6       # c_gbest
+num_repeticoes  = 100       # número de repetições do experimento
+```
+##### Resultados
+dim_particulas = 10
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 0.0004| 0.0250| 419.17  | 0.2713    | 6.32e-14  | -0.9999
+tempo           | 146s   | 29s   | 44s       | 38s      | 420s      | 26s
+
+dim_particulas = 20
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 3.1827| 0.8767| 2681.49   | 0.5454    | 0.7963    | -0.9987
+tempo           | 220s   | 125s   | 98s      | 38s      | 987s      | 61s
+
+dim_particulas = 50
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 14.9323| 21.3232| 9677.24   | 0.8787    | 46.1067 | -0.6461
+tempo           | 47s   | 432s   | 100s      | 39s      | 2213s      | 10s
+
+Nesse experimento é possível ver que o aumento da dimensão das partículas dificulta o processo de otimização, aumentando (piorando) o fitness e o tempo de convergência das funções. Em relação aos benchmarks, o Schwefel parece ser o mais difícil entre eles enquanto o Happy Cat aparenta ser o mais fácil de otimizar.
+
