@@ -241,3 +241,93 @@ NP                  = tamanho da colônia
 ```
 
 ## Resultados
+
+### Particle Swarm Optimization (PSO)
+
+#### - stop_criterion
+
+Neste experimento foi testado cinco valores diferentes do parâmentro stop_criterion, que variou no intervalo de 20 a 100 em passos de tamanho 20. 
+
+##### Configuração
+```
+benchmark       = Ackley function
+num_particulas  = 100
+dim_particulas  = 10, # dimensão das partículas
+w               = 0.5 # momentum
+c1              = 0.5 # c_pbest
+c2              = 0.5 # c_gbest
+num_repeticoes  = 100 # número de repetições do experimento
+```
+
+stop_criterion  | 20    | 40    | 60    | 80    | 100
+--------------- | ----- | ----- | ----- | ----- | -----
+fitness         | 0.0833| 0.0038| 0.0039| 0.1171| 0.0799
+tempo           | 266s  | 263s  | 305s  | 316s  | 355s
+
+A partir dos resultados da tabela acima é possível ver que um stop_criterion muito pequeno pode atrapalhar a convergência do método, o impedindo de alcançar melhores resultados. Entretanto, quanto maior o stop_criterion utilizado, maior o tempo de convergência do algoritmo. Também é possível verificar que o aumento do stop_criterion só ajuda o fitness até certo ponto, no experimento realizado o melhor valor de stop_criterion é 40, pois apresenta o melhor trade off entre fitness e tempo de converência.
+
+#### - c_gbest
+
+Nesse experimento foi verificado a influência do parâmetro c_gbest na convergência do algoritmo. Foram testados cinco valores para c_gbest, são eles 0.2, 0.4, 0.5, 0.6 e 0.8.
+
+##### Configuração
+```
+benchmark       = Ackley function
+stop_criterion  = 40
+num_particulas  = 100
+dim_particulas  = 10,       # dimensão das partículas
+w               = 0.5       # momentum
+c1              = 1 - c2    # c_pbest
+num_repeticoes  = 100       # número de repetições do experimento
+```
+
+c_gbest         | 0.2    | 0.4  | 0.5   | 0.6   | 0.8
+--------------- | ----- | ----- | ----- | ----- | -----
+fitness         | 2.4004| 0.0762| 0.0584| 0.0012| 0.0212
+tempo           | 193s  | 261s  | 258s  | 282s  | 196s
+
+Os resultados obtidos nesse experimento levam a acreditar que para essa configuração testada nesse benchmark o melhor valor de c_gbest é o 0.6. Ainda, valores de c_gbest muito próximos de 0 ou 1 aparentam levar a uma convergência prematura do algoritmo. Isso pode ser observado pelo aumento do fitness para esses valores (c_gbest = [0.2, 0.8]) ao mesmo tempo em que se mostra uma queda no tempo de convergência do algoritmo.
+
+#### - momentum
+Nesse experimento foi testado a influência do momentum na convergência do algoritmo. Foram realizados experimentos variando o momentum entre 0 e 0.8 em passos de 0.2.
+
+##### Configuração
+```
+benchmark       = Ackley function
+stop_criterion  = 40
+num_particulas  = 100
+dim_particulas  = 10,       # dimensão das partículas
+c1              = 1 - c2    # c_pbest
+c2              = 0.6       # c_gbest
+num_repeticoes  = 100       # número de repetições do experimento
+```
+
+momentum        | 0     | 0.2   | 0.4   | 0.6   | 0.8
+--------------- | ----- | ----- | ----- | ----- | -----
+fitness         | 1.2473| 2.9358| 0.2283| 0.0077| 9.3079
+tempo           | 163s  | 150s  | 245s  | 94s  | 53s
+
+Para esse experimento o valor de momentum que trouxe o melhor resultado de fitness foi 0.6. Ainda, parece haver uma tendência ao uma convergência cada vez mais rápida a medida que o valor do parâmetro momentum é aumentado. Todavia, essa convergência rápida não reflete necessariamente em um bom valor do fitness, como é o caso de momentum=0.8 que embora tenha tido a convergência mais rápida desse experimento, obteve também o pior valor de fitness.
+
+#### - num_particulas
+Nesse experimento é avaliado a influência do número de partículas do PSO. Para isso foram feitos testes com 20, 40, 60, 80 e 100 partículas.
+
+##### Configuração
+```
+benchmark       = Ackley function
+stop_criterion  = 40
+momentum        = 0.6
+dim_particulas  = 10,       # dimensão das partículas
+c1              = 1 - c2    # c_pbest
+c2              = 0.6       # c_gbest
+num_repeticoes  = 100       # número de repetições do experimento
+```
+
+num_particulas  | 20    | 40    | 60    | 80    | 100
+--------------- | ----- | ----- | ----- | ----- | -----
+fitness         | 3.2313| 0.0327| 0.0343| 0.0015| 0.0014
+tempo           | 32s  | 57s  | 80s  | 123s  | 157s
+
+Os resultados desse experimento mostraram que no intervalo testado para essa configuração de parâmetros/benchmark, o aumento no número de partículas refletiu diretamente na diminuição (melhora) do fitness. De forma natural, também é pertinente se atentar que o aumento do número de partículas tem uma relação direta com o aumento do tempo de convergência do algoritmo. Desta forma, é aconselhavel avaliar um trade off entre fitness e custo computacional fazer a escolher desse parâmetro. De toda forma, o valor do num_particulas que obteve o melhor fitness nesse experimento foi num_particulas = 100.
+
+ #### Benchmark / Dimensão das partículas
