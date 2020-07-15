@@ -310,6 +310,26 @@ tempo           | 163s  | 150s  | 245s  | 94s  | 53s
 
 Para esse experimento o valor de momentum que trouxe o melhor resultado de fitness foi 0.6. Ainda, parece haver uma tendência ao uma convergência cada vez mais rápida a medida que o valor do parâmetro momentum é aumentado. Todavia, essa convergência rápida não reflete necessariamente em um bom valor do fitness, como é o caso de momentum=0.8 que embora tenha tido a convergência mais rápida desse experimento, obteve também o pior valor de fitness.
 
+PSO com momentum = 0
+
+![pso_momentum_0](img/pso_momentum_0.gif)
+
+PSO com momentum = 0.2
+
+![pso_momentum_0.2](img/pso_momentum_0.2.gif)
+
+PSO com momentum = 0.4
+
+![pso_momentum_0.4](img/pso_momentum_0.4.gif)
+
+PSO com momentum = 0.6
+
+![pso_momentum_0.6](img/pso_momentum_0.6.gif)
+
+PSO com momentum = 0.8
+
+![pso_momentum_0.8](img/pso_momentum_0.8.gif)
+
 #### - num_particulas
 Nesse experimento é avaliado a influência do número de partículas do PSO. Para isso foram feitos testes com 20, 40, 60, 80 e 100 partículas.
 
@@ -552,5 +572,6 @@ Os resultados da variação do ABC, mostram que a adaptação feita não tem um 
 
 ## Conclusão
 
-falar do pso que foi necessário adicionar um limite máximo de épocas pq o gbest continuava melhorando por muito tempo, ele melhorava mas era muito pouco
+Um fato interessante com o PSO é que em alguns casos ele demorava muito pra convergir até eu notar que o motivo era sua condição de parada que exigia que o gbest passasse 'n' épocas sem melhora para poder parar o algoritmo. Porém, nesses casos em que o algoritmo demorava na convergência o que acontecia é que gbest continuava melhorando só que em uma escala muito pequena e isso fazia com que o algoritmo continuasse rodando por muito tempo. A solução que tive que aplicar para isso foi além da condição de parada tradicional, coloquei um limite no número de épocas para que o algoritmo não continuasse rodando por muito tempo mesmo sem obter uma melhora significante. Esse limite adotado foi um limite alto de 5000 épocas o que se mostrou suficiente para uma convergência dos problemas, uma vez que uma convergência normal se fazia em um máximo de 1000 épocas.
+
 
