@@ -409,4 +409,148 @@ benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponentia
 fitness         | 9.4798| 10.8680| 7470.23   | 0.6754    | 7.0297 | -0.9999
 tempo           | 337s   | 742s   | 345s      | 260s      | 6491s      | 237s
 
-Em geral, os resultados adquiridos nos experimentos com o a variação PSO mostram uma melhora no fitness das funções quando comparado com os resultados do PSO tradicional. Isso pode ser explicado pela reinicialização aleatória das partículas para fugir dos mínimos locais. Entretando essa alteração na condição de parada do algoritmo também trás impactos no tempo de convergência do método, pode-se dizer que em todos os benchmarks tivemos um aumento considerável no tempo de convergência do método. 
+Em geral, os resultados adquiridos nos experimentos com o a variação PSO mostram uma melhora no fitness das funções quando comparado com os resultados do PSO tradicional. Isso pode ser explicado pela reinicialização aleatória das partículas para fugir dos mínimos locais. Entretando essa alteração na condição de parada do algoritmo também trás impactos no tempo de convergência do método, pode-se dizer que em todos os benchmarks tivemos um aumento considerável no tempo de convergência do método.
+
+### Artificial Bee Colony (ABC)
+Resultados para o ABC padrão.
+
+#### - n_epocas
+Nesse experimento foi testado a influência do número de épocas na convergência do ABC. O número de épocas foi variado entre os valores: 100, 200, 400, 600 e 800.
+##### Configuração
+```
+benchmark       = Ackley function
+NP              = 200       # tamanho da colônia
+dim_problema    = 10        # dimensão do problema, quantos atributos a serem otimizados
+limit           = 20        # limite até abandonar uma fonte de alimento
+num_repeticoes  = 100       # número de repetições do experimento
+```
+
+##### Resultados
+n_epocas        | 100   | 200   | 400   | 600   | 800
+--------------- | ----- | ----- | ----- | ----- | -----
+fitness         | 1.4390| 0.9704| 0.3283| 0.3860| 0.3198
+tempo           | 209s  | 409s  | 848s  | 1286s | 1726s
+
+Nos resultados acima pode-se ver uma tendência a uma melhora do fitness quando se aumenta o número de épocas na convergência do algoritmo. Essa melhora no fitness é acompanhada pelo maior esforço computacional do algoritmo o que reflete também no tempo de convergência, quanto mais épocas mais o algoritmo vai demorar para retornar uma resposta. Também é razóavel acreditar que exista um limite no número de épocas utilizadas, onde o fitness não vai obter nenhuma melhora, pois já terá convergido para algum valor. Dessa forma é bom avaliar o trade off entre fitness e tempo de resposta ao se escolher o número de épocas. No nosso caso escolhemos n_epocas = 100 como melhor resultado pelo motivo dos outros valores de épocas testados consumirem muito tempo para convergência.
+
+#### - limit
+Nesse experimento foi análisado a variável 'limit' que controla quando as abelhas irão abandonar uma fonte de alimento e partir para outra. Nos experimentos realizados testamos a variável 'limit' com os valores: 5, 10, 20, 30 e 40.
+ 
+##### Configuração
+```
+benchmark       = Ackley function
+NP              = 200       # tamanho da colônia
+dim_problema    = 10        # dimensão do problema, quantos atributos a serem otimizados
+n_epocas        = 100       # número de épocas para convergência
+num_repeticoes  = 100       # número de repetições do experimento
+```
+
+##### Resultados
+limit           | 5     | 10    | 20    | 30    | 40
+--------------- | ----- | ----- | ----- | ----- | -----
+fitness         | 0.5231| 1.2120| 1.8024| 1.7953| 1.7383
+tempo           | 219s  | 211s  | 207s  | 209s | 206s
+
+Os resultados do experimento variando o parâmetro 'limit' mostram que valores mais baixos de 'limit' conseguem obter melhores resultados de fitness. Isso pode ser explicado por as abelhas não perderem muito tempo nas fontes de alimento sem conseguir melhora-las. Valores baixos de 'limit' possibilitam as abelhas as explorarem mais fontes de alimento o que consequentemente aumenta as chances de se encontrar uma fonte de alimento melhor. É importante mencionar que o valor de 'limit' utilizado não tem impacto no tempo de convergência do algoritmo, apenas na qualidade da convergência. O melhor valor que encontramos nesse experimento foi 'limit=5' que conseguiu chegar a um fitness de 0.5231 no benchmark Ackley.
+
+
+#### - NP
+Nesse experimento avaliamos como o número de abelhas influência na convergência do algoritmo. Para isso testamos cinco valores diferentes de NP, foram eles: 20, 50, 100, 200 e 300.
+
+##### Configuração
+```
+benchmark       = Ackley function
+limit           = 5       # limite até abandonar uma fonte de alimento
+dim_problema    = 10      # dimensão do problema, quantos atributos a serem otimizados
+n_epocas        = 100     # número de épocas para convergência
+num_repeticoes  = 100     # número de repetições do experimento
+```
+
+##### Resultados
+NP              | 20    | 50    | 100   | 200   | 300
+--------------- | ----- | ----- | ----- | ----- | -----
+fitness         | 5.6308| 3.0853| 1.3094| 0.9966| 0.6839
+tempo           | 21s   | 51s   | 105s  | 208s  | 314s
+
+Nos experimentos variando o tamanho da colônia (NP) é possível ver que colônias maiores tendem a encontrar um valor de fitness melhor. Isso pode ser explicado pelo motivo de colônias maiores terem mais fontes de alimentos sendo exploradas ao mesmo tempo. É possível que também exista um limite para o tamanho da colônia onde a partir dele não se veja resultado significativo no fitness do algoritmo, porém com os valores de NP testados aqui não conseguimos chegar a esse limite. Outro fato a ser observado é que quanto maior a colônia, maior será o custo computacional do algoritmo elevando assim seu tempo de execução, então o trade off entre fitness e tempo de execuçáo também tem que ser considerado ao escolher o tamanho da colônia. Para seguir nossos experimentos, escolhemos 'NP = 200', como melhor valor pois ele conseguiu um bom valor de fitness em um tempo razoável para nós. 
+
+#### Benchmark / Dimensão das partículas
+Nesse experimentos testamos como o ABC se comporta nos diferentes benchmarks apresentados anteriormente. Também foi análisado o impacto da dimensão do problema (número de atríbutos a serem otimizados) no resultado final do algoritmo.
+
+##### Configuração
+```
+NP              = 200     # tamanho da colônia
+limit           = 5       # limite até abandonar uma fonte de alimento
+n_epocas        = 100     # número de épocas para convergência
+num_repeticoes  = 100     # número de repetições do experimento
+```
+
+##### Resultados
+dim_problema = 10
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 1.1918| 0.0301| 1.9002    | 0.1931    | 0.0010    | -0.9999
+tempo           | 207s  | 167s  | 168s      | 191s      | 282s      | 170s
+
+dim_problema = 20
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 2.4237| 0.0823| 17.7931   | 0.4220    | 0.0066    | -0.9996
+tempo           | 208s  | 167s  | 168s      | 192s      | 420s      | 170s
+
+dim_problema = 50
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         |12.7170| 8.0740| 3861.17   | 0.6775    | 2.9196    | -0.8193
+tempo           | 210s  | 168s  | 170s      | 194s      | 832s      | 172s
+
+Assim como no PSO, também é possível se ver um reflexo no fitness do ABC quando se aumenta o número de atributos a serem otimizados por ele, quanto mais atributos mais complexo fica o processo de otimização o que resulta em um fitness maior. Para o ABC o benchmark Schwefel se apresenta como sendo o mais desafiador, assim como aconteceu com o PSO. Entretanto, o ABC foi capaz de encontrar uma solução melhor do que a do PSO  no Schwefel.
+
+
+### Artificial Bee Colony (ABC) - Variação
+Resultados para a variação do ABC onde é estabelecido um critério de parada alternativo. Nela, em vez de se rodar o algoritmo por um número fixo de épocas, ele é rodado até que a melhor solução não melhore por um número 'n' de épocas. Essa adaptação pode permitir que o ABC encontre soluções melhores sem ser sabotado pelo limite no número de épocas.
+
+
+#### Benchmark / Dimensão das partículas
+Nesse experimentos testamos como a variação do ABC se comporta nos diferentes benchmarks apresentados anteriormente. Também foi análisado o impacto da dimensão do problema (número de atríbutos a serem otimizados) no resultado final do algoritmo.
+
+##### Configuração
+```
+NP                  = 200     # tamanho da colônia
+limit               = 5       # limite até abandonar uma fonte de alimento
+n_epocas_melhora    = 20      # número de épocas sem melhora da melhor solução
+num_repeticoes      = 100     # número de repetições do experimento
+```
+
+##### Resultados
+
+dim_problema = 10
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 1.4953| 0.0129| 4.3000    | 0.2081    | 0.0008    | -0.9999
+tempo           | 196s  | 178s  | 164s      | 83s       | 255s      | 143s
+
+dim_problema = 20
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 0.8705| 0.0315| 2.8007    | 0.4965    | 0.0015    | -0.9999
+tempo           | 367s  | 380s  | 345s      | 75s       | 564s      | 324s
+
+dim_problema = 50
+
+benchmark       | Ackley| Alpine|Schwefel   |Happy Cat  | Brown     | Exponential
+--------------- | ----- | ----- | -----     | -----     | -----     |  ----
+fitness         | 5.4210| 2.6845| 481.42    | 0.7726    | 5.1532    | -0.9922
+tempo           | 393s  | 270s  | 332s      | 94s       | 292s      | 275s
+
+Os resultados da variação do ABC, mostram que a adaptação feita não tem um efeito muito significante quando o problema a ser otimizado não é tão complexo, por exemplo quando o benchmark é fácil e/ou se tem poucos atributos a serem otimizados. Isso pode ser explicado pelo fato do número fixo de épocas que utilizamos anteriormente no ABC padrão já ser suficiente para encontrar uma boa solução nesses casos. Ainda assim, em problemas mais complexos com mais variáveis a serem otimizadas e/ou em um benchmark mais difícil, a variação escolhida do ABC consegue mostrar melhores resultados, pois o número fixo de épocas que escolhemos anteriormente pode não ser suficiente para se obter uma boa otimização nesses casos. Como exemplo temos os resultados do benchmark Schwefel que melhoraram significativamente na variação do ABC em comparação aos resultados obtidos com o ABC padrão.
+
+## Conclusão
+
+falar do pso que foi necessário adicionar um limite máximo de épocas pq o gbest continuava melhorando por muito tempo, ele melhorava mas era muito pouco
+
