@@ -19,11 +19,12 @@ Atualização da Partícula:
 #### Parâmetros
 ```
 num_particulas  = Número de partículas
+stop_criterion  = Número de épocas sem atualizar o gbest
 v_i             = Velocidade da i-ésima partícula
 x_i             = Posição da i-ésima partícula
 pbest_i         = Melhor posição da i-ésima partícula
 g_best          = Melhor posição entre todas as partículas
-w               = Ponderação de inércia
+w               = Ponderação de inércia, momentum
 c_1             = Controla quão rápido a partícula vai convergir para 'pbest'
 c_2             = Controla quão rápido a partícula vai convergir para 'gbest'
 r               = Número aleatório entre 0 e 1
@@ -95,7 +96,7 @@ for(run=0;run<bee.runtime;run++)
 }
 ```
 ### Artificial Bee Colony (ABC) - Variação
-A variação do ABC implementada faz a mudança do número fixo de épocas 'n_epocas' para otimização do algoritmo por um limite de épocas sem atualização da melhor fonte de alimento. Essa mudança permite que a otimização dos parâmetros não seja interrompida antes de se chegar em um mínimo local/global. Outro benefício dessa variação do ABC é a economia de recursos computacionais quando o algoritmo se encontra preso em um mínimo local, pois em vez de ter que rodar todas as épocas restantes, ele vai persistir somente até que o limia estabelecido de épocas sem melhora da melhor fonte de comida.
+A variação do ABC implementada faz a mudança do número fixo de épocas 'n_epocas' para otimização do algoritmo por um limite de épocas sem atualização da melhor fonte de alimento. Essa mudança permite que a otimização dos parâmetros não seja interrompida antes de se chegar em um mínimo local/global. Outro benefício dessa variação do ABC é a economia de recursos computacionais quando o algoritmo se encontra preso em um mínimo local, pois em vez de ter que rodar todas as épocas restantes, ele vai persistir somente até que o limiar estabelecido de épocas sem melhora da melhor fonte de comida.
   
 #### Novos Parâmetros
 ```
@@ -214,7 +215,29 @@ Mínimo Global: [0, ..., 0]
 ![exponential_graph3](img/exponential_graph3.jpg)
 
 ## Experimentos
+Nesta atividade foram realizados experimentos para testar a influência dos parâmetros dos métodos descritos no resultado final da otimização. Para isso foram análisados o fitness da solução final e o tempo que o algoritmo levou para convergir até o resultado final.
 
+Em cada experimento foram realizadas 100 repetições do algoritmo com cada combinação de parâmetros. O resultado expresso do fitness é referente a repetição que obteve o menor (melhor) fitness entre todas as execuções. Ainda, o resultado do tempo de convergência é expresso em segundos e é referente ao tempo gasto para rodar todas as 100 repetições do algoritmo.
 
+Além dos experimentos para testar a influência dos parâmetros de cada método, também foram realizados experimentos para determinar a eficácia de cada método, PSO, ABC e suas variações, nos benchmarks descritos acima. Nesse caso, cada benchmark foi testado utilizando 10, 20 e 50 atributos. Assim como nos experimentos para determinar a influência dos parâmetros, os resultados expressos nesse experimentos são referentes aos valores obtidos após 100 execuções de cada método com um conjunto fixo de parâmetros. Desta forma o valor de fitness é o menor encontrado em todas as 100 execuções e o tempo de convergência é referente a soma do tempo das 100 execuções.
+
+Abaixo segue os parâmetros testados no método base do PSO e do ABC.   
+
+### Particle Swarm Optimization (PSO)
+ 
+```
+stop_criterion      = número de épocas sem atualização de g_best
+c1                  = c_pbest, influência do p_best na convergência do método
+c2                  = c_gbest, influência do g_best na convergência do método
+w                   = momentum, quanto a última velocidade vai influênciar na velocidade atual da partícula
+num_particulas      = número de partículas utilizadas na convergência
+```
+
+### Artificial Bee Colony (ABC)
+```
+n_epocas            = número de épocas utilizadas
+limit               = limite até abandonar uma fonte de comida
+NP                  = tamanho da colônia
+```
 
 ## Resultados
