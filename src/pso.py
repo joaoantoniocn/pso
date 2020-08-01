@@ -86,6 +86,7 @@ class PSO:
 				plt.title(self.benchmark_name + reboot_message)
 				plt.legend()
 				plt.pause(0.1)
+				plt.savefig('../img/gif/momentum0/'+str(self.total_iterations))
 
 
 			self.total_iterations += 1
